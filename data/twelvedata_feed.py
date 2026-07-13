@@ -31,7 +31,8 @@ class TwelveDataFeed:
                 "outputsize": outputsize,
                 "apikey": self.api_key,
                 "format": "JSON",
-                "order": "ASC"
+                "order": "ASC",
+                "timezone": "Asia/Bangkok"
             }
             response = requests.get(url, params=params, timeout=10)
             data = response.json()

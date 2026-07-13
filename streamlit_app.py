@@ -9,7 +9,11 @@ from plotly.subplots import make_subplots
 import numpy as np
 import sys
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
+
+def get_thai_time():
+    """Returns current time in UTC+7 (Thai Time)"""
+    return datetime.utcnow() + timedelta(hours=7)
 
 # ── Path setup so we can import core modules ──────────────────────
 sys.path.insert(0, os.path.dirname(__file__))
@@ -201,7 +205,7 @@ def calc_win_pct(candles, signal, vp_data):
         else:
             reasons.append(('✗ ห่าง POC เยอะ', '#ff9100'))
 
-    h = datetime.now().hour
+    h = get_thai_time().hour
     if 14 <= h < 23:
         score += 10; reasons.append(('✓ อยู่ในเวลาเทรด 14–23', '#00e676'))
     else:
@@ -215,7 +219,7 @@ win_pct, reasons = calc_win_pct(candles, signal, vp_data)
 # ══════════════════════════════════════════════════════════════════
 #  HEADER
 # ══════════════════════════════════════════════════════════════════
-now_str = datetime.now().strftime('%d/%m/%Y  %H:%M:%S')
+now_str = get_thai_time().strftime('%d/%m/%Y  %H:%M:%S')
 st.markdown(f"""
 <div class="app-header">
     <div>
@@ -498,7 +502,7 @@ st.markdown("---")
 cols = st.columns([4, 1])
 with cols[0]:
     next_refresh = 60
-    st.caption(f"⏱ อัพเดตอัตโนมัติทุก 60 วินาที | เวลา: {datetime.now().strftime('%H:%M:%S')}")
+    st.caption(f"⏱ อัพเดตอัตโนมัติทุก 60 วินาที | เวลาไทย: {get_thai_time().strftime('%H:%M:%S')}")
 with cols[1]:
     if st.button("🔄 รีเฟรช"):
         st.cache_data.clear()
